@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hors du Gouffre</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ECRAN TITRE -->
+  <div id="screen-title" class="screen active">
+    <div class="title-wrap">
+      <div class="title-eyebrow">Un roman dont vous etes le detectives</div>
+      <h1 class="game-title-big">Hors du<br>Gouffre</h1>
+      <div class="title-sub">Lyon, 2025. Quelque chose dort sous les pierres.</div>
+      <button class="btn-primary" onclick="showScreen('screen-create')">Commencer</button>
+      <div class="title-footer">
+        <span>Chapitre I : Les Traboules</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ECRAN CREATION PERSONNAGE -->
+  <div id="screen-create" class="screen">
+    <div class="create-wrap">
+      <div class="create-header">
+        <div class="section-label">Creation du personnage</div>
+        <h2 class="create-title">Qui etes-vous ?</h2>
+      </div>
+
+      <!-- Prenom / Nom -->
+      <div class="field-group">
+        <label class="field-label" for="char-prenom">Prenom</label>
+        <input type="text" id="char-prenom" class="field-input" placeholder="Marc" maxlength="20" />
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="char-nom">Nom de famille</label>
+        <input type="text" id="char-nom" class="field-input" placeholder="Delacroix" maxlength="30" />
+      </div>
+
+      <!-- Genre -->
+      <div class="field-group">
+        <label class="field-label">Genre</label>
+        <div class="option-row" id="genre-options">
+          <button class="option-btn selected" data-value="homme" onclick="selectOption(this, 'genre')">Homme</button>
+          <button class="option-btn" data-value="femme" onclick="selectOption(this, 'genre')">Femme</button>
+          <button class="option-btn" data-value="autre" onclick="selectOption(this, 'genre')">Autre / Non-binaire</button>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="field-group">
+        <label class="field-label">Age</label>
+        <div class="option-row" id="age-options">
+          <button class="option-btn" data-value="30" onclick="selectOption(this, 'age')">Debut trentaine</button>
+          <button class="option-btn selected" data-value="38" onclick="selectOption(this, 'age')">Fin trentaine</button>
+          <button class="option-btn" data-value="48" onclick="selectOption(this, 'age')">Quarantaine</button>
+        </div>
+      </div>
+
+      <!-- Apparence -->
+      <div class="field-group">
+        <label class="field-label">Apparence generale</label>
+        <div class="option-col" id="apparence-options">
+          <button class="option-btn wide selected" data-value="fatigue" onclick="selectOption(this, 'apparence')">
+            <span class="opt-title">L'use</span>
+            <span class="opt-desc">Cernes permanents, vieux manteau qui a vu mieux. Les gens ne vous regardent pas deux fois -- avantage en filature.</span>
+          </button>
+          <button class="option-btn wide" data-value="discret" onclick="selectOption(this, 'apparence')">
+            <span class="opt-title">Le discret</span>
+            <span class="opt-desc">Ni beau ni laid, ni grand ni petit. Une visage qui s'oublie. Utile quand on prefere ne pas etre vu.</span>
+          </button>
+          <button class="option-btn wide" data-value="imposant" onclick="selectOption(this, 'apparence')">
+            <span class="opt-title">L'imposant</span>
+            <span class="opt-desc">Corpulence qui inspire le respect -- ou la mefiance. Les portes s'ouvrent plus facilement. Parfois meme les mauvaises.</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Origine -->
+      <div class="field-group">
+        <label class="field-label">Passe</label>
+        <div class="option-col" id="passe-options">
+          <button class="option-btn wide selected" data-value="ex-flic" onclick="selectOption(this, 'passe')">
+            <span class="opt-title">Ex-flic</span>
+            <span class="opt-desc">Ancien du SRPJ reconverti. Vous savez lire une scene de crime. Certains collegues vous tolèrent encore. Mentale +10 au depart.</span>
+          </button>
+          <button class="option-btn wide" data-value="journaliste" onclick="selectOption(this, 'passe')">
+            <span class="opt-title">Journaliste reconverti</span>
+            <span class="opt-desc">Vous savez faire parler les gens. Vos sources sont partout. Votre compte en banque, moins. Argent +50 mais -10 au depart.</span>
+          </button>
+          <button class="option-btn wide" data-value="militaire" onclick="selectOption(this, 'passe')">
+            <span class="opt-title">Ancien militaire</span>
+            <span class="opt-desc">Deux tours en exterieur. Vous gerez le stress. La violence ne vous surprend pas. Sante mentale +15 mais Suspicion +10.</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Rapport au surnaturel -->
+      <div class="field-group">
+        <label class="field-label">Votre rapport a l'inexplique</label>
+        <div class="option-col" id="occulte-options">
+          <button class="option-btn wide selected" data-value="sceptique" onclick="selectOption(this, 'occulte')">
+            <span class="opt-title">Sceptique</span>
+            <span class="opt-desc">Tout s'explique. Les fantomes n'existent pas. Les coincidences non plus, d'ailleurs. Mental plus stable au debut, mais chaque decouverte coute plus cher.</span>
+          </button>
+          <button class="option-btn wide" data-value="ouvert" onclick="selectOption(this, 'occulte')">
+            <span class="opt-title">Curieux ouvert</span>
+            <span class="opt-desc">Vous n'y croyez pas vraiment, mais vous ne dites jamais jamais. Profil equilibre.</span>
+          </button>
+          <button class="option-btn wide" data-value="initie" onclick="selectOption(this, 'occulte')">
+            <span class="opt-title">L'initie qui se cache</span>
+            <span class="opt-desc">Vous avez deja vu quelque chose. Vous avez essaye d'oublier. Vous savez des choses utiles -- mais la sante mentale de depart est fragilisee. -15 mental, +15 connaissance occulte.</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bouton de confirmation -->
+      <div class="create-footer">
+        <div class="preview-name" id="preview-name">Marc Delacroix</div>
+        <div class="preview-sub" id="preview-sub">Homme, fin trentaine -- Ex-flic, sceptique</div>
+        <button class="btn-primary" onclick="startGame()">Commencer l'enquete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ECRAN JEU -->
+  <div id="screen-game" class="screen">
+    <!-- Header fixe -->
+    <div class="game-header" id="game-header">
+      <div class="game-header-left">
+        <div class="char-name-tag" id="hdr-name">Marc Delacroix</div>
+        <div class="location-tag" id="hdr-location">Lyon, Croix-Rousse</div>
+      </div>
+      <button class="hdr-btn" onclick="togglePanel('panel-stats')" id="btn-stats">Stats</button>
+    </div>
+
+    <!-- Panel stats (toggle) -->
+    <div class="stats-panel" id="panel-stats" style="display:none">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Sante mentale</div>
+          <div class="stat-card-value" id="stat-mental">87</div>
+          <div class="stat-bar-wrap"><div class="stat-bar-fill mental" id="bar-mental" style="width:87%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Argent</div>
+          <div class="stat-card-value" id="stat-money">340 EUR</div>
+          <div class="stat-bar-wrap"><div class="stat-bar-fill money" id="bar-money" style="width:34%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Suspicion</div>
+          <div class="stat-card-value" id="stat-suspicion">12</div>
+          <div class="stat-bar-wrap"><div class="stat-bar-fill suspicion" id="bar-suspicion" style="width:12%"></div></div>
+        </div>
+        <div class="stat-card" id="stat-occulte-card">
+          <div class="stat-card-label">Connaissance occulte</div>
+          <div class="stat-card-value" id="stat-occulte">0</div>
+          <div class="stat-bar-wrap"><div class="stat-bar-fill occulte" id="bar-occulte" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="inventory-section">
+        <div class="inv-label">Inventaire</div>
+        <div class="inventory-row" id="inventory-row"></div>
+      </div>
+    </div>
+
+    <!-- Zone notifications -->
+    <div id="notification-zone"></div>
+
+    <!-- Zone de jeu principale -->
+    <div class="game-content" id="game-content">
+      <div class="chapter-tag" id="chapter-tag"></div>
+      <h2 class="scene-title" id="scene-title"></h2>
+      <div class="scene-body" id="scene-body"></div>
+      <div class="choices-wrap" id="choices-wrap"></div>
+    </div>
+
+    <!-- Journal -->
+    <div class="journal-section">
+      <div class="journal-label">Journal</div>
+      <div id="journal-list"></div>
+    </div>
+  </div>
+
+  <script src="data/scenes.js"></script>
+  <script src="engine.js"></script>
+</body>
+</html>
