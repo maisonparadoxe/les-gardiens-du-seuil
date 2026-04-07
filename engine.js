@@ -114,6 +114,17 @@ function startGame() {
 
   showScreen('screen-game');
   renderScene('start');
+  
+  // Scroll directement au contenu sans animation au premier chargement
+  setTimeout(() => {
+    const gameContent = document.getElementById('game-content');
+    if (gameContent) {
+      const header = document.querySelector('.game-header');
+      const headerHeight = header ? header.offsetHeight : 0;
+      const yOffset = gameContent.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+      window.scrollTo({ top: yOffset, behavior: 'instant' });
+    }
+  }, 50);
 }
 
 /* ----------------------------------------------------------
