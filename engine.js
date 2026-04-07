@@ -1,6 +1,6 @@
 /* ============================================================
    engine.js
-   Moteur de jeu -- gestion de l'etat, navigation, UI
+   Moteur de jeu - gestion de l'etat, navigation, UI
    ============================================================ */
 
 /* ----------------------------------------------------------
@@ -34,7 +34,7 @@ const STATE = {
 };
 
 /* ----------------------------------------------------------
-   CREATION -- gestion des options
+   CREATION - gestion des options
 ---------------------------------------------------------- */
 
 function selectOption(btn, group) {
@@ -58,7 +58,7 @@ function updatePreview() {
 
   const s = STATE.selections;
   document.getElementById('preview-sub').textContent =
-    `${genreLabels[s.genre] || 'Homme'}, ${ageLabels[s.age] || 'fin trentaine'} -- ${passeLabels[s.passe] || 'Ex-flic'}, ${occulteLabels[s.occulte] || 'sceptique'}`;
+    `${genreLabels[s.genre] || 'Homme'}, ${ageLabels[s.age] || 'fin trentaine'} - ${passeLabels[s.passe] || 'Ex-flic'}, ${occulteLabels[s.occulte] || 'sceptique'}`;
 }
 
 document.getElementById('char-prenom').addEventListener('input', updatePreview);
@@ -123,7 +123,7 @@ function startGame() {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  //window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 
 function togglePanel(id) {
@@ -193,7 +193,15 @@ function renderScene(sceneId) {
 
   updateStatsUI();
   updateInventoryUI();
-  //window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // Scroll en douceur vers le contenu sans remonter trop haut
+  const gameContent = document.getElementById('game-content');
+  if (gameContent) {
+    const header = document.querySelector('.game-header');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const yOffset = gameContent.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+    window.scrollTo({ top: yOffset, behavior: 'smooth' });
+  }
 }
 
 /* ----------------------------------------------------------
@@ -250,12 +258,50 @@ function addItem(item, notify_user) {
   }
 }
 
+// Categorie de chaque item
+const ITEM_CATEGORIES = {
+  'Carnet':                        'Objets',
+  'Telephone':                     'Objets',
+  'Cle du bureau':                 'Objets',
+  'Photo de Thomas':               'Indices',
+  'Adresse de la traboule':        'Indices',
+  'Note: inscription latine':      'Documents',
+  'Photos archives (1891)':        'Documents',
+  'Carnet de Thomas (couv. rouge)':'Documents',
+  'Notes: temoignage de Julien':   'Documents',
+  'Carte de Romain (traboules)':   'Documents',
+  'Tel. de Thomas (brise)':        'Indices',
+  'Photos traboule':               'Indices',
+};
+
+function getItemCategory(item) {
+  return ITEM_CATEGORIES[item] || 'Objets';
+}
+
 function updateInventoryUI() {
   const row = document.getElementById('inventory-row');
   if (!row) return;
-  row.innerHTML = STATE.inventory
-    .map(item => `<div class="item-pill">${item}</div>`)
-    .join('');
+
+  const categories = {};
+  STATE.inventory.forEach(item => {
+    const cat = getItemCategory(item);
+    if (!categories[cat]) categories[cat] = [];
+    categories[cat].push(item);
+  });
+
+  const order = ['Indices', 'Documents', 'Objets'];
+  let html = '';
+  order.forEach(cat => {
+    if (!categories[cat] || categories[cat].length === 0) return;
+    html += `<div class="inv-category">`;
+    html += `<div class="inv-cat-label">${cat}</div>`;
+    html += `<div class="inv-cat-items">`;
+    categories[cat].forEach(item => {
+      html += `<div class="item-pill">${item}</div>`;
+    });
+    html += `</div></div>`;
+  });
+  row.innerHTML = html;
 }
 
 /* ----------------------------------------------------------
@@ -302,6 +348,6 @@ function addJournalEntry(msg) {
   const now = new Date();
   const hh = now.getHours().toString().padStart(2, '0');
   const mm = now.getMinutes().toString().padStart(2, '0');
-  el.textContent = `${hh}:${mm} -- ${msg}`;
+  el.textContent = `${hh}:${mm} - ${msg}`;
   list.prepend(el);
 }
