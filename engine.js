@@ -9,8 +9,8 @@
 
 const STATE = {
   char: {
-    prenom: 'Marc',
-    nom: 'Delacroix',
+    prenom: 'Edouard',
+    nom: 'Lacroix',
     genre: 'homme',
     age: 38,
     apparence: 'fatigue',
